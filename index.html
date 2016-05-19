@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>JSON/YAML/etc. with embedded expressions</title>
+<style>
+  pre {
+    padding: 16px;
+    background-color: #f7f7f7;
+    line-height: 1.45;
+  }
+  tt, code {
+    background-color: #f7f7f7;
+  }
+</style>
+</head>
+<body>
+<h1>JSON/YAML/etc. with embedded expressions</h1>
+
+<p>A library for resolving embedded expressions in YAML, JSON and other. Empower your data with calculations!</p>
+
+<h2>Install</h2>
+
+<pre><code>$ gem install json-yaml-embedded-expressions
+</code></pre>
+
+<h2>Usage</h2>
+
+<p><code>example.yaml</code>:</p>
+
+<pre><code>packages:
+  "Office":
+    subpath: utils/office
+    modules:
+    - basename: writer
+      path: ="#{top.install_path}/#{parent.parent.subpath}/#{basename}"
+    - basename: spreadsheet
+      path: ="#{top.install_path}/#{parent.parent.subpath}/#{basename}"
+    modules_count: =modules.size
+install_path: /home/alice
+all_paths: =packages["Office"].modules.map(&amp;:path)
+</code></pre>
+
+<p>Command line:</p>
+
+<pre><code>$ yaml-embedded-expressions example.yaml
+---
+packages:
+  Office:
+    subpath: utils/office
+    modules:
+    - basename: writer
+      path: /home/alice/utils/office/writer
+    - basename: spreadsheet
+      path: /home/alice/utils/office/spreadsheet
+    modules_count: 2
+install_path: /home/alice
+all_paths:
+- /home/alice/utils/office/writer
+- /home/alice/utils/office/spreadsheet
+</code></pre>
+
+<p>Command line (JSON):</p>
+
+<pre><code>$ json-embedded-expressions example.json | json_pp
+{
+  "packages" : {
+      "Office" : {
+        "subpath" : "utils/office",
+        "modules" : [
+            {
+              "path" : "/home/alice/utils/office/writer",
+              "basename" : "writer"
+            },
+            {
+              "basename" : "spreadsheet",
+              "path" : "/home/alice/utils/office/spreadsheet"
+            }
+        ],
+        "modules_count" : 2
+      }
+  },
+  "install_path" : "/home/alice",
+  "all_paths" : [
+      "/home/alice/utils/office/writer",
+      "/home/alice/utils/office/spreadsheet"
+  ]
+}
+</code></pre>
+
+<p>In Ruby:</p>
+
+<pre><code>require 'yaml/embedded_expressions'
+require 'easy_hash'
+
+d = (YAML.load(File.read('example.yaml'))
+YAML::EmbeddedExpressions.resolve!(d)
+puts d
+  # {
+  #   "packages" =&gt; {
+  #     "Office" =&gt; {
+  #       "subpath" =&gt; "utils/office",
+  #       "modules" =&gt; [
+  #         {
+  #           "basename" =&gt; "writer", 
+  #           "path" =&gt; "/home/alice/utils/office/writer"
+  #         },
+  #         {
+  #           "basename" =&gt; "spreadsheet",
+  #           "path" =&gt; "/home/alice/utils/office/spreadsheet"
+  #         }
+  #       ],
+  #       "modules_count" =&gt; 2
+  #     }
+  #   },
+  #   "install_path" =&gt; "/home/alice",
+  #   "all_paths" =&gt; [
+  #     "/home/alice/utils/office/writer",
+  #     "/home/alice/utils/office/spreadsheet"
+  #   ]
+  # }
+</code></pre>
+
+<h3>Details</h3>
+
+<p>Embedded expression is a string of the form <code>=expr</code> (and not <code>==expr</code>) where
+<code>expr</code> is a Ruby expression. The expression is evaluated in context of the map/array it is contained in. Inside <code>expr</code> you may use <code>self</code>, <code>parent</code> and <code>top</code>. Map entries may be accessed/assigned via <code>map['key']</code>. If using command-line utilities or required <code>easy_hash</code> then <code>map.key</code> also works.</p>
+
+<p>Embedded expressions in map's keys are ignored, e. g., the following is not evaluated: <code>{"=2+2": "foobar"}</code>.</p>
+
+<h2>Links</h2>
+
+<ul>
+<li><a href="http://www.rubydoc.info/gems/json-yaml-embedded-expressions/0.0.1">Documentation</a></li>
+<li><a href="https://github.com/LavirtheWhiolet/json-yaml-embedded-expressions">Source code</a></li>
+</ul>
+</body>
+</html>
