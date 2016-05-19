@@ -1,0 +1,30 @@
+#!/usr/bin/ruby
+require 'json'
+require 'json/embedded_expressions'
+
+def usage
+  puts <<-USAGE
+
+Usage: #{File.basename __FILE__} [-h|--help] [file]
+
+Resolves embedded expressions in JSON. The JSON is read from file or from
+standard input.
+
+  USAGE
+end
+
+if ["-h", "--help"].include? ARGV.first then
+  usage
+  exit
+end
+
+input =
+  if ARGV.empty? then STDIN
+  elsif ARGV.size == 1 then File.open(ARGV.shift)
+  else usage; abort
+  end
+begin
+  puts(JSON::EmbeddedExpressions.resolve!(JSON.parse(input.read)).to_json)
+ensure
+  input.close
+end
