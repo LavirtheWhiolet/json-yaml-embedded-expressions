@@ -30,15 +30,14 @@ module EmbeddedExpressions
   #   }
   #   EmbeddedExpressions.resolve!(d)
   #   puts d.inspect
-  #     #=>
-  #       {
-  #         "a" => [
-  #           42,
-  #           "== ignored"
-  #         ],
-  #         "b" => 40,
-  #         "c" => 20
-  #       }
+  #     # {
+  #     #   "a" => [
+  #     #     42,
+  #     #     "== ignored"
+  #     #   ],
+  #     #   "b" => 40,
+  #     #   "c" => 20
+  #     # }
   # 
   def resolve!(data)
     # Replace all "=expr" strings with {EmbeddedExpression}s.
