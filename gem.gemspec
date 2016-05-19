@@ -11,6 +11,6 @@ A library for resolving embedded expressions in YAML, JSON and other. Empower yo
   s.required_ruby_version = '1.9.3'
   s.files       = Dir["lib/**/*.rb"] + ["README.md"]
   s.bindir      = "bin"
-  s.homepage    = "lavirthewhiolet.github.io/json-yaml-embedded-expressions"
+  s.homepage    = "http://lavirthewhiolet.github.io/json-yaml-embedded-expressions"
   s.executables << "json-embedded-expressions" << "yaml-embedded-expressions"
 end
