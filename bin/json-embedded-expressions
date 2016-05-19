@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'json'
 require 'json/embedded_expressions'
+require 'easy_hash'
 
 def usage
   puts <<-USAGE

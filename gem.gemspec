@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'json-yaml-embedded-expressions'
-  s.version     = '0.0.3'
+  s.version     = '0.0.4'
   s.licenses    = ['MIT']
   s.summary     = "Embedded expressions in YAML/JSON/etc."
   s.description = <<-EOF
