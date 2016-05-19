@@ -7,7 +7,7 @@ Install
 -------
 
     $ gem install json-yaml-embedded-expressions
-    
+
 Usage
 -----
 
@@ -108,3 +108,9 @@ Embedded expression is a string of the form `=expr` (and not `==expr`) where
 `expr` is a Ruby expression. The expression is evaluated in context of the map/array it is contained in. Inside `expr` you may use `self`, `parent` and `top`. Map entries may be accessed/assigned via `map['key']`. If using command-line utilities or required `easy_hash` then `map.key` also works.
 
 Embedded expressions in map's keys are ignored, e. g., the following is not evaluated: `{"=2+2": "foobar"}`.
+
+Links
+-----
+
+- [Documentation](http://www.rubydoc.info/gems/json-yaml-embedded-expressions/0.0.1)
+- [Source code](https://github.com/LavirtheWhiolet/json-yaml-embedded-expressions)
